@@ -68,6 +68,10 @@ public class List implements IList {
     public Object getElement(int index) {
         return find(index).value;
     }
+    
+    public int size(){
+        return this._qtt;
+    }
 
     private void removeOfFirst() {
         this._fistNode = this._fistNode.next;

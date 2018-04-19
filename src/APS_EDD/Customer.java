@@ -32,42 +32,10 @@ public class Customer {
         this._arrival = _arrival;
     }
 
-    /**
-     * @return the _number
-     */
-    public int getNumber() {
-        return _number;
-    }
-
-    /**
-     * @param _number the _number to set
-     */
-    public void setNumber(int _number) {
-        this._number = _number;
-    }
-
-    /**
-     * @return the _name
-     */
-    public String getName() {
-        return _name;
-    }
-
-    /**
-     * @param _name the _name to set
-     */
-    public void setName(String _name) {
-        this._name = _name;
-    }
-
-    public Customer(int number, String name, int arrival) {
-        this._number = number;
-        this._name = name;
+    public Customer(int arrival) {
         this._arrival = arrival;
     }
 
-    private int _number;
-    private String _name;
     private int _arrival;
     private int _exit;
 
