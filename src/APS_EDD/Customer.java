@@ -75,7 +75,7 @@ public class Customer {
         _exit = x - _arrival;
     }
 
-    public int getIntention() {
+    public int getAction() {
         Random r = new Random();
 
         int n = r.nextInt(3);
