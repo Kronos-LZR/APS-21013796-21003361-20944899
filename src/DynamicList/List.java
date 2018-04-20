@@ -31,11 +31,11 @@ public class List implements IList {
         } else if (index == this._qtt) {
             removeOfEnd();
         } else {
-            Node anterior = find(index - 1);
-            Node atual = anterior.next;
-            Node proxima = atual.next;
-            anterior.next = proxima;
-            proxima.Prev = anterior;
+            Node prev = find(index - 1);
+            Node current = prev.next;
+            Node next = current.next;
+            prev.next = next;
+            next.Prev = prev;
             this._qtt--;
         }
 

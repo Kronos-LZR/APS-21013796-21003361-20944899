@@ -18,33 +18,87 @@ public class Program {
 
         // FILA DE CLIENTES
         Queue CustomerQueue = new Queue();
-        
+
         // LISTA DE CLIENTES ATENDIDOS
-        List CustomerLIst = new List();
+        List CustomerList = new List();
 
-        while (timer < 21600) {
+        // Hora Extra
+        int workOvertime;
 
-            if (CheckerCustomerInQueue()) {
-                CustomerQueue.enqueue(new Customer(timer));
+        // Tempo medio de espera
+        int tme = 0;
+
+        // CONTADORES DE AÇÔES
+        int tCashOut = 0, tDeposit = 0, tPayment = 0, tCustomers = 0;
+
+        while (true) {
+
+            if (timer < 21600) {
+                if (CheckerCustomerInQueue()) {
+                    CustomerQueue.enqueue(new Customer(timer));
+                }
             }
 
             for (int i = 0; i < TicketList.size(); i++) {
                 TicketWindow tw = (TicketWindow) TicketList.getElement(i);
                 if (tw.checkIfAvailable()) {
-                    if(!CustomerQueue.isEmpty())
-                        tw.actionResult(CustomerQueue.dequeue().getAction());
+                    if (!CustomerQueue.isEmpty()) {
+                        Customer c = CustomerQueue.dequeue();
+                        tw.actionResult(c.getAction());
+                        c.getTimeInQueue(timer);
+                        CustomerList.add(c);
+                    }
                 } else {
                     tw.elapsed();
                 }
             }
 
-            timer++;
+            if (CustomerQueue.isEmpty() && timer > 21600) {
+                int count = 0;
 
+                for (int i = 0; i < TicketList.size(); i++) {
+                    TicketWindow tw = (TicketWindow) TicketList.getElement(i);
+                    if (tw.checkIfAvailable()) {
+                        count++;
+                    }
+                }
+
+                if (count == 3) {
+                    break;
+                }
+            }
+
+            timer++;
         }
 
-        //System.out.println("Tempo de espera: " + customer.getExit() + " segundos");
-        //System.out.println("Clientes Atendidos: " + ticketWindow.getCustomerServed());
-        //System.out.println("Quantidade de atendimentos: " + ticketWindow.countServedType1());
+        // CALCULA SERVIÇOS
+        for (int i = 0; i < TicketList.size(); i++) {
+            TicketWindow tw = (TicketWindow) TicketList.getElement(i);
+            tCashOut += tw.getCashOut();
+            tDeposit += tw.getDeposit();
+            tPayment += tw.getPayment();
+            tCustomers += tw.getCustomerServed();
+        }
+
+        // CALCULANDO HORA-EXTRA
+        workOvertime = timer - 21600;
+
+        // PEGANDO TEMPO DE ESPERA DE CADA CLIENTE
+        for (int i = 0; i < CustomerList.size(); i++) {
+            Customer c = (Customer) CustomerList.getElement(i);
+            tme += c.getExit();
+        }
+
+        // CALCULANDO TEMPO MEDIO DE ESPERA
+        tme = tme / CustomerList.size();
+
+        System.out.println("Tempo medio de espera é de: " + tme + " segundos");
+        System.out.println("Tempo extra é de: " + workOvertime + " segundos");
+        System.out.println("Clientes atendidos: " + tCustomers);
+        System.out.println("Saques realizados: " + tCashOut);
+        System.out.println("Depositos realizados: " + tDeposit);
+        System.out.println("Pagamentos realizados: " + tPayment);
+
     }
 
     private static Boolean CheckerCustomerInQueue() {
