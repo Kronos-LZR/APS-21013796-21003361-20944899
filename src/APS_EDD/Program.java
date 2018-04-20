@@ -12,6 +12,7 @@ public class Program {
         // INCIANDO LISTA DE GUICHES
         List TicketList = new List();
 
+        // ADICIONA CAIXAS
         TicketList.add(new TicketWindow());
         TicketList.add(new TicketWindow());
         TicketList.add(new TicketWindow());
